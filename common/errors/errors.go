@@ -20,7 +20,12 @@ func (e *Error) Error() string {
 
 var errorMessage = map[int]string{
     1001: "文章不存在",
-    1002: "文章保存失败",
+    1002: "文章发表失败",
+    2001: "评论不存在",
+    2002: "评论发表失败",
+    3001: "分类不存在",
+    3002: "分类创建失败",
+    9001: "文件无效",
 }
 
 func NewError(code int) Error {

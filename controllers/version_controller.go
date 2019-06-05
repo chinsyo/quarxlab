@@ -7,8 +7,9 @@ import (
 )
 
 type versionController int 
-const VersionController versionController = 0
+const VersionController = versionController(0)
 
 func (this versionController) Latest(c *gin.Context) {
-	c.String(http.StatusOK, models.Current.String())
+	latest := models.LatestVersion.String()
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": nil, "data": map[string]interface{}{"version": latest}})
 }

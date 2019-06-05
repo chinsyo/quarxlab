@@ -1,0 +1,41 @@
+nohup: ignoring input
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /v1/version               --> quarxlab/controllers.versionController.Latest-fm (3 handlers)
+[GIN-debug] GET    /v1/assets                --> quarxlab/controllers.assetsController.List-fm (3 handlers)
+[GIN-debug] POST   /v1/assets                --> quarxlab/controllers.assetsController.Upload-fm (3 handlers)
+[GIN-debug] GET    /v1/assets/:assets_id     --> quarxlab/controllers.assetsController.Download-fm (3 handlers)
+[GIN-debug] PUT    /v1/assets/:assets_id     --> quarxlab/controllers.assetsController.Update-fm (3 handlers)
+[GIN-debug] DELETE /v1/assets/:assets_id     --> quarxlab/controllers.assetsController.Delete-fm (3 handlers)
+[GIN-debug] POST   /v1/signup                --> quarxlab/controllers.userController.Signup-fm (3 handlers)
+[GIN-debug] POST   /v1/signin                --> quarxlab/controllers.userController.Signin-fm (3 handlers)
+[GIN-debug] POST   /v1/logout                --> quarxlab/controllers.userController.Logout-fm (3 handlers)
+[GIN-debug] POST   /v1/verify                --> quarxlab/controllers.userController.Verify-fm (3 handlers)
+[GIN-debug] POST   /v1/forgot                --> quarxlab/controllers.userController.Forgot-fm (3 handlers)
+[GIN-debug] POST   /v1/edit                  --> quarxlab/controllers.userController.Edit-fm (3 handlers)
+[GIN-debug] GET    /v1/profile               --> quarxlab/controllers.userController.Profile-fm (3 handlers)
+[GIN-debug] GET    /v1/profile/:user_id      --> quarxlab/controllers.userController.Profile-fm (3 handlers)
+[GIN-debug] GET    /v1/article               --> quarxlab/controllers.articleController.List-fm (3 handlers)
+[GIN-debug] POST   /v1/article               --> quarxlab/controllers.articleController.Create-fm (3 handlers)
+[GIN-debug] GET    /v1/article/:article_id   --> quarxlab/controllers.articleController.Query-fm (3 handlers)
+[GIN-debug] PUT    /v1/article/:article_id   --> quarxlab/controllers.articleController.Update-fm (3 handlers)
+[GIN-debug] DELETE /v1/article/:article_id   --> quarxlab/controllers.articleController.Delete-fm (3 handlers)
+[GIN-debug] GET    /v1/article/:article_id/comment --> quarxlab/controllers.commentController.List-fm (3 handlers)
+[GIN-debug] POST   /v1/article/:article_id/comment --> quarxlab/controllers.commentController.Create-fm (3 handlers)
+[GIN-debug] GET    /v1/comment/:comment_id   --> quarxlab/controllers.commentController.Query-fm (3 handlers)
+[GIN-debug] PUT    /v1/comment/:comment_id   --> quarxlab/controllers.commentController.Update-fm (3 handlers)
+[GIN-debug] DELETE /v1/comment/:comment_id   --> quarxlab/controllers.commentController.Delete-fm (3 handlers)
+[GIN-debug] GET    /v1/category              --> quarxlab/controllers.categoryController.List-fm (3 handlers)
+[GIN-debug] POST   /v1/category              --> quarxlab/controllers.categoryController.Create-fm (3 handlers)
+[GIN-debug] GET    /v1/category/:category_id --> quarxlab/controllers.categoryController.Query-fm (3 handlers)
+[GIN-debug] PUT    /v1/category/:category_id --> quarxlab/controllers.categoryController.Update-fm (3 handlers)
+[GIN-debug] DELETE /v1/category/:category_id --> quarxlab/controllers.categoryController.Delete-fm (3 handlers)
+[GIN-debug] Listening and serving HTTP on :8000
+[GIN] 2019/06/06 - 17:51:30 | 200 |     625.867µs |  117.159.25.126 | GET      /v1/article
+[GIN] 2019/06/06 - 17:52:10 | 200 |     491.035µs |  117.159.25.126 | GET      /v1/article
+[GIN] 2019/06/06 - 17:54:10 | 200 |     408.048µs |  117.159.25.126 | GET      /v1/article
+[GIN] 2019/06/06 - 17:58:36 | 404 |      11.121µs |   64.41.200.105 | GET      /
+[GIN] 2019/06/06 - 18:02:41 | 200 |     444.086µs |  117.159.25.126 | GET      /v1/article
+[GIN] 2019/06/06 - 18:02:45 | 404 |         791ns |  117.159.25.126 | GET      /

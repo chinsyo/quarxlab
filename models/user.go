@@ -7,4 +7,5 @@ import (
 type User struct {
 	gorm.Model
 	Username string `form:"username" json:"username"`
+	Assets []Asset  `form:"-" json:"-"`
 }

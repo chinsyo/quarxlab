@@ -7,7 +7,7 @@ import (
 type Comment struct {
 	gorm.Model
 	Content string `form:"content" json:"content"`
-	Author int `form:"author" json:"author"`
-	Article int `form:"article" json:"article"`
+	AuthorID uint `form:"author" json:"author"`
+	ArticleID uint `gorm:"foreignkey:ArticleID;association_foreignkey:ID"`
 }
 

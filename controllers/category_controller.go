@@ -2,33 +2,86 @@ package controllers
 
 import (
     "net/http"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	
+	"quarxlab/database"
+	"quarxlab/models"
+	"log"
+	xerrors "quarxlab/common/errors"
 )
 
+func init() {
+	database.Database().AutoMigrate(&models.Category{})
+}
+
 type categoryController int
-const CategoryController categoryController = 0
+const CategoryController = categoryController(0)
 
 func (this categoryController) List(c *gin.Context) {
-
-	c.String(http.StatusOK, "category list")
+	
+	var categories []models.Category
+	database.Database().Find(&categories)
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": categories})
 }
 
 func (this categoryController) Create(c *gin.Context) {
 
-	c.String(http.StatusOK, "category insert")
+	var category models.Category
+	if err := c.ShouldBind(&category); err == nil {
+		created := database.Database().Create(&category).RowsAffected > 0
+		if !created {
+			err1 := xerrors.NewError(3002)
+			panic(&err1)
+		}
+		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+	} else {
+		log.Fatal(err)
+		panic(err)
+	}
 }
 
 func (this categoryController) Query(c *gin.Context) {
 
-    c.String(http.StatusOK, "category query")
+	categoryId := c.Param("category_id")
+
+	var category models.Category
+    database.Database().First(&category, categoryId)
+    
+    var articles []models.Article
+    database.Database().Model(&category).Related(&articles)
+
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": articles})
 }
 
 func (this categoryController) Update(c *gin.Context) {
 
-	c.String(http.StatusOK, "category update")
+	categoryId := c.Param("category_id")
+
+	var category models.Category
+	if err := c.ShouldBind(&category); err == nil {
+		updated := database.Database().Model(&category).Where("id = ?", categoryId).Updates(category).RowsAffected > 0
+		if !updated {
+			err := xerrors.NewError(3001)
+			panic(&err)
+		}
+
+		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+		return 
+	} else {
+		log.Fatal(err)
+		panic(err)
+	}
 }
 
 func (this categoryController) Delete(c *gin.Context) {
 
-	c.String(http.StatusOK, "category delete")
+	categoryId := c.Param("category_id")
+
+	deleted := database.Database().Where("id = ?", categoryId).Delete(&models.Category{}).RowsAffected > 0
+	if !deleted {
+		err := xerrors.NewError(3001)
+		panic(&err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
 }

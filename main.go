@@ -10,11 +10,8 @@ func main() {
 
 	router := gin.New()
 	router.Use(gin.Logger())
-	// router.Use(gin.Recovery())
-	// router.Use(xmiddlewares.Jsonify())
 	router.Use(xmiddlewares.Recovery())
-
-	v1 := router.Group("/v1")
+	v1 := router.Group("/api/v1")
 	{
 		// version
 		v1.GET("/version", VersionController.Latest)
@@ -22,8 +19,6 @@ func main() {
 		// assets
 		v1.GET("/assets", AssetsController.List)
 		v1.POST("/assets", AssetsController.Upload)
-		v1.GET("/assets/:assets_id", AssetsController.Download)
-		v1.PUT("/assets/:assets_id", AssetsController.Update)
 		v1.DELETE("/assets/:assets_id", AssetsController.Delete)
 
 		// users

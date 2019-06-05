@@ -10,7 +10,8 @@ type Version struct {
 	Build int
 }
 
-var Current Version = Version{1, 0, 0}
+// var Current Version = Version{1, 0, 0}
+var LatestVersion = Version{1, 0, 0}
 
 func (v1 *Version) EqualTo(v2 *Version) bool {
 	return v1.Major == v2.Major && v1.Minor == v2.Minor && v1.Build == v2.Build
@@ -42,5 +43,5 @@ func (v1 *Version) LessThanOrEqualTo(v2 *Version) bool {
 }
 
 func (v *Version) String() string {
-	return fmt.Sprintf("%d.%d.%d", Current.Major, Current.Minor, Current.Build)
+	return fmt.Sprintf("%d.%d.%d", v.Major, v.Minor, v.Build)
 }

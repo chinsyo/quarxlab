@@ -10,10 +10,15 @@ import (
 	xerrors "quarxlab/common/errors"
 )
 
+func init() {
+	database.Database().AutoMigrate(&models.Article{})
+}
+
 type articleController int
-const ArticleController articleController = 0
+const ArticleController = articleController(0)
 
 func (this articleController) List(c *gin.Context) {
+	
 	var articles []models.Article
 	database.Database().Find(&articles)
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": articles})
@@ -37,10 +42,10 @@ func (this articleController) Create(c *gin.Context) {
 
 func (this articleController) Query(c *gin.Context) {
 
-	id := c.Param("article_id")
+	articleId := c.Param("article_id")
 
 	var article models.Article
-	database.Database().First(&article, id)
+	database.Database().First(&article, articleId)
 	if article.ID == 0 {
 		err := xerrors.NewError(1001)
 		panic(&err)
@@ -51,13 +56,11 @@ func (this articleController) Query(c *gin.Context) {
 
 func (this articleController) Update(c *gin.Context) {
 
-	id := c.Param("article_id")
+	articleId := c.Param("article_id")
 
 	var article models.Article
-	database.Database().First(&article, id)
-
 	if err := c.ShouldBind(&article); err == nil {
-		updated := database.Database().Save(&article).RowsAffected > 0
+		updated := database.Database().Model(&article).Where("id = ?", articleId).Updates(article).RowsAffected > 0
 		if !updated {
 			err := xerrors.NewError(1001)
 			panic(&err)
@@ -72,8 +75,9 @@ func (this articleController) Update(c *gin.Context) {
 }
 
 func (this articleController) Delete(c *gin.Context) {
-	id := c.Param("article_id")
-	deleted := database.Database().Where("id = ?", id).Delete(&models.Article{}).RowsAffected > 0
+	
+	articleId := c.Param("article_id")
+	deleted := database.Database().Where("id = ?", articleId).Delete(&models.Article{}).RowsAffected > 0
 	if !deleted {
 		err := xerrors.NewError(1001)
 		panic(&err)

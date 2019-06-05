@@ -4,7 +4,7 @@ go 1.12
 
 replace (
 	cloud.google.com/go => github.com/googleapis/google-cloud-go v0.37.4
-	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20190308221718-c2843e01d9a2
+	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20190325154230-a5d413f7728c
 	golang.org/x/exp => github.com/golang/exp v0.0.0-20190121172915-509febef88a4
 	golang.org/x/lint => github.com/golang/lint v0.0.0-20190301231843-5614ed5bae6f
 	golang.org/x/net => github.com/golang/net v0.0.0-20190503192946-f4e77d36d62c
@@ -22,7 +22,9 @@ replace (
 
 require (
 	github.com/BurntSushi/toml v0.3.1
+	github.com/dchest/captcha v0.0.0-20170622155422-6a29415a8364 // indirect
 	github.com/gin-gonic/gin v1.4.0
 	github.com/jinzhu/gorm v1.9.8
 	github.com/kr/pretty v0.1.0 // indirect
+	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
 )
