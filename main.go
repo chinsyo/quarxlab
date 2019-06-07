@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	xmiddlewares "quarxlab/common/middlewares"
 	. "quarxlab/controllers"
+
 )
 
 func main() {
@@ -11,7 +12,9 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(xmiddlewares.Recovery())
-	v1 := router.Group("/api/v1")
+	router.Use(xmiddlewares.JWT())
+	
+	v1 := router.Group("/api/v1") 
 	{
 		// version
 		v1.GET("/version", VersionController.Latest)
@@ -27,7 +30,7 @@ func main() {
 		v1.POST("/logout", UserController.Logout)
 		v1.POST("/verify", UserController.Verify)
 		v1.POST("/forgot", UserController.Forgot)
-		v1.POST("/edit", UserController.Edit)
+		v1.POST("/profile", UserController.Edit)
 		v1.GET("/profile", UserController.Profile)
 		v1.GET("/profile/:user_id", UserController.Profile)
 
@@ -51,7 +54,6 @@ func main() {
 		v1.GET("/category/:category_id", CategoryController.Query)
 		v1.PUT("/category/:category_id", CategoryController.Update)
 		v1.DELETE("/category/:category_id", CategoryController.Delete)
-
 	}
 	router.Run(":8000")
 }

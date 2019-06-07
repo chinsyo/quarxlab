@@ -30,10 +30,10 @@ func (this categoryController) Create(c *gin.Context) {
 	if err := c.ShouldBind(&category); err == nil {
 		created := database.Database().Create(&category).RowsAffected > 0
 		if !created {
-			err1 := xerrors.NewError(3002)
-			panic(&err1)
+			errJson := xerrors.NewError(3002)
+			panic(&errJson)
 		}
-		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 	} else {
 		log.Fatal(err)
 		panic(err)
@@ -65,7 +65,7 @@ func (this categoryController) Update(c *gin.Context) {
 			panic(&err)
 		}
 
-		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 		return 
 	} else {
 		log.Fatal(err)
@@ -83,5 +83,5 @@ func (this categoryController) Delete(c *gin.Context) {
 		panic(&err)
 	}
 
-	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 }

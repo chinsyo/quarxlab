@@ -5,9 +5,10 @@ import (
 	"os"
 	"log"
 	"fmt"
-	"time"
+	// "time"
     "net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/bwmarrin/snowflake"
 	"quarxlab/database"
 	"quarxlab/models"
 )
@@ -28,11 +29,20 @@ func (this assetsController) Upload(c *gin.Context) {
 	file, header, err := c.Request.FormFile("file")
 	if err != nil {
 		log.Fatal(err)
-		c.String(http.StatusBadRequest, "Bad request")
+		panic(err)
+		return
+		// c.String(http.StatusBadRequest, "Bad request")
 	}
 
-	timestamp := time.Now().UnixNano()
-	filename := fmt.Sprintf("%d_%s", timestamp, header.Filename)
+	node, err := snowflake.NewNode(1)
+	if err != nil {
+		log.Fatal(err)
+		panic(err)
+		return
+	}
+
+	// timestamp := time.Now().UnixNano()
+	filename := fmt.Sprintf("%d_%s", node.Generate().Int64(), header.Filename)
 
 	dir, err := os.Create("static/upload/" + filename)
 	if err != nil {
@@ -44,6 +54,7 @@ func (this assetsController) Upload(c *gin.Context) {
 	_, err = io.Copy(dir, file)
 	if err != nil {
 		log.Fatal(err)
+		panic(err)
 	}
 
 	c.String(http.StatusCreated, "upload successful")

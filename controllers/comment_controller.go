@@ -40,10 +40,10 @@ func (this commentController) Create(c *gin.Context) {
 		comment.ArticleID = uint(d)
 		created := database.Database().Create(&comment).RowsAffected > 0
 		if !created {
-			err1 := xerrors.NewError(2002)
-			panic(&err1)
+			errJson := xerrors.NewError(2002)
+			panic(&errJson)
 		}
-		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 	} else {
 		log.Fatal(err)
 		panic(err)
@@ -77,7 +77,7 @@ func (this commentController) Update(c *gin.Context) {
 			panic(&err)
 		}
 
-		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 		return 
 	} else {
 		log.Fatal(err)
@@ -94,5 +94,5 @@ func (this commentController) Delete(c *gin.Context) {
 		panic(&err)
 	}
 
-	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": nil})
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 }
