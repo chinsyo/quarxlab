@@ -4,6 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     xerrors "quarxlab/common/errors"
     "net/http"
+    "log"
 )
 
 func Recovery() gin.HandlerFunc {
@@ -15,7 +16,10 @@ func Recovery() gin.HandlerFunc {
                         errJson := err.(*xerrors.Error)
                         c.JSON(http.StatusOK, gin.H{"code": errJson.Code, "message": errJson.Message, "data": nil})
                     default:
-                        c.JSON(http.StatusInternalServerError, &xerrors.ErrUnknown)
+                        errJson := &xerrors.ErrUnknown
+                        // errJson.Message = err.String()
+                        log.Fatal(err)
+                        c.JSON(http.StatusInternalServerError, gin.H{"code": errJson.Code, "message": errJson.Message, "data": err})
                 }
             }
         }()

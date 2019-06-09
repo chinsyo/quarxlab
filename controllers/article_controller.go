@@ -46,8 +46,8 @@ func (this articleController) Query(c *gin.Context) {
 	var article models.Article
 	database.Database().First(&article, articleId)
 	if article.ID == 0 {
-		err := xerrors.NewError(1001)
-		panic(&err)
+		errJson := xerrors.NewError(1001)
+		panic(&errJson)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": article})

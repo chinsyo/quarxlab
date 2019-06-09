@@ -4,6 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     xjwt "quarxlab/common/jwt"
     xerrors "quarxlab/common/errors"
+    xctx "quarxlab/common/context"
     "net/http"
     "time"
 )
@@ -30,7 +31,7 @@ func JWT() gin.HandlerFunc {
     return func(c *gin.Context) {
 
         path := c.Request.URL.Path
-        // log.Println("path:", path)
+
         if bypass(path) {
             c.Next()
             return
@@ -54,6 +55,8 @@ func JWT() gin.HandlerFunc {
             c.JSON(http.StatusUnauthorized, gin.H{"code": errJson.Code, "message": errJson.Message, "data": nil})
             c.Abort()
             return
+        } else {
+            c.Set(xctx.UID, claims.UserID)
         }
         c.Next()
     }

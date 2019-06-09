@@ -9,10 +9,10 @@ var jwtSecret = []byte("quarxlab_secret")
 
 type Claims struct {
 	xjwt.StandardClaims
-	UserID string 
+	UserID uint 
 }
 
-func GenerateToken(userID string) (string, error) {
+func GenerateToken(userID uint) (string, error) {
 	createTime := time.Now()
 	expireTime := createTime.Add(3 * time.Hour)
 

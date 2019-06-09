@@ -57,8 +57,8 @@ func (this commentController) Query(c *gin.Context) {
 	var comment models.Comment
 	database.Database().First(&comment, commentId)
 	if comment.ID == 0 {
-		err := xerrors.NewError(2001)
-		panic(&err)
+		errJson := xerrors.NewError(2001)
+		panic(&errJson)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": comment})
@@ -73,8 +73,8 @@ func (this commentController) Update(c *gin.Context) {
 	if err := c.ShouldBind(&comment); err == nil {
 		updated := database.Database().Model(&comment).Where("id = ?", commentId).Updates(comment).RowsAffected > 0
 		if !updated {
-			err := xerrors.NewError(2001)
-			panic(&err)
+			errJson := xerrors.NewError(2001)
+			panic(&errJson)
 		}
 
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
@@ -90,8 +90,8 @@ func (this commentController) Delete(c *gin.Context) {
 	commentId := c.Param("comment_id")
 	deleted := database.Database().Where("id = ?", commentId).Delete(&models.Comment{}).RowsAffected > 0
 	if !deleted {
-		err := xerrors.NewError(2001)
-		panic(&err)
+		errJson := xerrors.NewError(2001)
+		panic(&errJson)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
