@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"log"
 	"strconv"
-	xjwt "quarxlab/common/jwt"
-	xerrors "quarxlab/common/errors"
-	xctx "quarxlab/common/context"
+	xjwt "quarxlab/lib/jwt"
+	xerrors "quarxlab/lib/errors"
+	xctx "quarxlab/lib/context"
 	"golang.org/x/crypto/bcrypt"
-	"quarxlab/database"
-	"quarxlab/models"
+	"quarxlab/app/database"
+	"quarxlab/app/models"
 )
 
 func init() {

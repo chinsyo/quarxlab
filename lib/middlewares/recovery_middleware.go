@@ -2,7 +2,7 @@ package middlewares
 
 import (
     "github.com/gin-gonic/gin"
-    xerrors "quarxlab/common/errors"
+    xerrors "quarxlab/lib/errors"
     "net/http"
     "log"
 )

@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"quarxlab/models"
+	"quarxlab/app/models"
 )
 
 type versionController int 

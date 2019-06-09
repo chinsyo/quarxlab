@@ -4,10 +4,10 @@ import (
     "net/http"
 	"github.com/gin-gonic/gin"
 	
-	"quarxlab/database"
-	"quarxlab/models"
+	"quarxlab/app/database"
+	"quarxlab/app/models"
 	"log"
-	xerrors "quarxlab/common/errors"
+	xerrors "quarxlab/lib/errors"
 )
 
 func init() {

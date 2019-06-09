@@ -9,8 +9,8 @@ import (
     "net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/bwmarrin/snowflake"
-	"quarxlab/database"
-	"quarxlab/models"
+	"quarxlab/app/database"
+	"quarxlab/app/models"
 )
 
 func init() {

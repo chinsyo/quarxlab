@@ -5,10 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 	
 	"log"
-	"quarxlab/database"
-	"quarxlab/models"
+	"quarxlab/app/database"
+	"quarxlab/app/models"
 	"strconv"
-	xerrors "quarxlab/common/errors"
+	xerrors "quarxlab/lib/errors"
 )
 
 func init() {

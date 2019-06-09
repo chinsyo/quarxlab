@@ -2,9 +2,9 @@ package middlewares
 
 import (
     "github.com/gin-gonic/gin"
-    xjwt "quarxlab/common/jwt"
-    xerrors "quarxlab/common/errors"
-    xctx "quarxlab/common/context"
+    xjwt "quarxlab/lib/jwt"
+    xerrors "quarxlab/lib/errors"
+    xctx "quarxlab/lib/context"
     "net/http"
     "time"
 )

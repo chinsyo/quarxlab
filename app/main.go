@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	xmiddlewares "quarxlab/common/middlewares"
-	. "quarxlab/controllers"
+	xmiddlewares "quarxlab/lib/middlewares"
+	. "quarxlab/app/controllers"
 
 )
 
