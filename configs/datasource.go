@@ -14,7 +14,7 @@ type DataSource interface {
 type MySQLConfig struct {
 	Name string
 	Host string
-	Port int16
+	Port uint16
 	Username string
 	Password string
 }

@@ -10,7 +10,6 @@ type Version struct {
 	Build int
 }
 
-// var Current Version = Version{1, 0, 0}
 var LatestVersion = Version{1, 0, 0}
 
 func (v1 *Version) EqualTo(v2 *Version) bool {
