@@ -30,7 +30,7 @@ func (this articleController) Create(c *gin.Context) {
 		created := database.Database().Create(&article).RowsAffected > 0
 		if !created {
 			errJson := xerrors.NewError(1002)
-			panic(&errJson)
+			panic(errJson)
 		}
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 	} else {
@@ -41,13 +41,13 @@ func (this articleController) Create(c *gin.Context) {
 
 func (this articleController) Query(c *gin.Context) {
 
-	articleId := c.Param("article_id")
+	articleID := c.Param("article_id")
 
 	var article models.Article
-	database.Database().First(&article, articleId)
+	database.Database().First(&article, articleID)
 	if article.ID == 0 {
 		errJson := xerrors.NewError(1001)
-		panic(&errJson)
+		panic(errJson)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": article})
@@ -55,14 +55,14 @@ func (this articleController) Query(c *gin.Context) {
 
 func (this articleController) Update(c *gin.Context) {
 
-	articleId := c.Param("article_id")
+	articleID := c.Param("article_id")
 
 	var article models.Article
 	if err := c.ShouldBind(&article); err == nil {
-		updated := database.Database().Model(&article).Where("id = ?", articleId).Updates(article).RowsAffected > 0
+		updated := database.Database().Model(&article).Where("id = ?", articleID).Updates(article).RowsAffected > 0
 		if !updated {
-			err := xerrors.NewError(1001)
-			panic(&err)
+			errJson := xerrors.NewError(1001)
+			panic(errJson)
 		}
 
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
@@ -75,11 +75,11 @@ func (this articleController) Update(c *gin.Context) {
 
 func (this articleController) Delete(c *gin.Context) {
 	
-	articleId := c.Param("article_id")
-	deleted := database.Database().Where("id = ?", articleId).Delete(&models.Article{}).RowsAffected > 0
+	articleID := c.Param("article_id")
+	deleted := database.Database().Where("id = ?", articleID).Delete(&models.Article{}).RowsAffected > 0
 	if !deleted {
-		err := xerrors.NewError(1001)
-		panic(&err)
+		errJson := xerrors.NewError(1001)
+		panic(errJson)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})

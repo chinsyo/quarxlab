@@ -1,3 +1,4 @@
 package context
 
-const UID = "uid"
+const UID = "uid" // UserID
+const CID = "cid" // CaptchaID

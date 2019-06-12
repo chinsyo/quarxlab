@@ -19,6 +19,10 @@ func main() {
 		// version
 		v1.GET("/version", VersionController.Latest)
 
+		// captcha
+		v1.GET("/captcha", CaptchaController.Refresh)
+		v1.POST("/captcha", CaptchaController.Verify)
+
 		// assets
 		v1.GET("/assets", AssetsController.List)
 		v1.POST("/assets", AssetsController.Upload)

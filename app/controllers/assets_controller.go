@@ -5,7 +5,6 @@ import (
 	"os"
 	"log"
 	"fmt"
-	// "time"
     "net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/bwmarrin/snowflake"
@@ -21,7 +20,7 @@ type assetsController int
 const AssetsController = assetsController(0)
 
 func (this assetsController) List(c *gin.Context) {
-	c.String(http.StatusOK, "assets list")
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 }
 
 func (this assetsController) Upload(c *gin.Context) {
@@ -30,18 +29,14 @@ func (this assetsController) Upload(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
-		return
-		// c.String(http.StatusBadRequest, "Bad request")
 	}
 
 	node, err := snowflake.NewNode(1)
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
-		return
 	}
 
-	// timestamp := time.Now().UnixNano()
 	filename := fmt.Sprintf("%d_%s", node.Generate().Int64(), header.Filename)
 
 	dir, err := os.Create("static/upload/" + filename)
@@ -57,9 +52,9 @@ func (this assetsController) Upload(c *gin.Context) {
 		panic(err)
 	}
 
-	c.String(http.StatusCreated, "upload successful")
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 }
 
 func (this assetsController) Delete(c *gin.Context) {
-	c.String(http.StatusOK, "assets delete")
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 }

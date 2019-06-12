@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"log"
 	"strconv"
+	"regexp"
 	xjwt "quarxlab/lib/jwt"
 	xerrors "quarxlab/lib/errors"
 	xctx "quarxlab/lib/context"
@@ -22,8 +23,18 @@ const UserController = userController(0)
 
 func (this userController) check(username, password string) {
 	if username == "" || password == "" {
-		err := xerrors.NewError(4101)
-		panic(&err)
+		errJson := xerrors.NewError(4101)
+		panic(errJson)
+	}
+
+	if ok, _ := regexp.MatchString("^[a-zA-Z0-9]{6,16}$", username); !ok {
+		errJson := xerrors.NewError(4103)
+		panic(errJson)
+	}
+
+	if ok, _ := regexp.MatchString("^[a-zA-Z0-9]{6,16}$", password); !ok {
+		errJson := xerrors.NewError(4104)
+		panic(errJson)
 	}
 }
 
@@ -49,7 +60,7 @@ func (this userController) Signup(c *gin.Context) {
 			tx.Rollback()
 			log.Fatal("User create failed")
 			errJson := xerrors.NewError(4002)
-			panic(&errJson)
+			panic(errJson)
 		}
 
 		profile := models.Profile{UserID: user.ID}
@@ -58,7 +69,7 @@ func (this userController) Signup(c *gin.Context) {
 			tx.Rollback()
 			log.Fatal("Profile create failed")
 			errJson := xerrors.NewError(4002)
-			panic(&errJson)
+			panic(errJson)
 		}
 		tx.Commit()
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
@@ -74,18 +85,18 @@ func (this userController) Signin(c *gin.Context) {
 	password := c.PostForm("password")
 	this.check(username, password)
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		log.Fatal(err)
-		panic(err)
+	var user models.User
+	database.Database().Where("username = ?", username).First(&user)
+
+	if (user.ID == 0) {
+		errJson := xerrors.NewError(4001)
+		panic(errJson)
 	}
 
-	user := models.User{Username: username}
-	database.Database().First(&user)
-	err = bcrypt.CompareHashAndPassword(hash, []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		log.Fatal(err)
-		panic(err)
+		errJson := xerrors.NewError(4102)
+		panic(errJson)
 	}
 
 	jwt, _ := xjwt.GenerateToken(user.ID)
@@ -93,7 +104,7 @@ func (this userController) Signin(c *gin.Context) {
 }
 
 func (this userController) Logout(c *gin.Context) {
-
+	c.Set(xctx.UID, nil)
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": nil, "data": gin.H{}})
 }
 
@@ -120,7 +131,7 @@ func (this userController) Forgot(c *gin.Context) {
 		created := database.Database().Create(&user).RowsAffected > 0
 		if !created {
 			errJson := xerrors.NewError(4002)
-			panic(&errJson)
+			panic(errJson)
 		}
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
 	} else {
@@ -139,11 +150,12 @@ func (this userController) Profile(c *gin.Context) {
 		ctxUID, _ := c.Get(xctx.UID)
 		userID = ctxUID.(uint)
 	}
+
 	var profile = models.Profile{UserID: userID}
 	database.Database().First(&profile)
 	if profile.ID == 0 {
 		errJson := xerrors.NewError(4001)
-		panic(&errJson)
+		panic(errJson)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": nil, "data": profile })
@@ -159,7 +171,7 @@ func (this userController) Edit(c *gin.Context) {
 		updated := database.Database().Model(&oldProfile).Where("user_id = ?", userID).Updates(&newProfile).RowsAffected > 0
 		if !updated {
 			errJson := xerrors.NewError(4001)
-			panic(&errJson)
+			panic(errJson)
 		}
 
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})

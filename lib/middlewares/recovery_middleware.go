@@ -12,13 +12,12 @@ func Recovery() gin.HandlerFunc {
         defer func() {
             if err := recover(); err != nil {
                 switch err.(type) {
-                    case (*xerrors.Error):
-                        errJson := err.(*xerrors.Error)
+                    case (xerrors.Error):
+                        errJson := err.(xerrors.Error)
                         c.JSON(http.StatusOK, gin.H{"code": errJson.Code, "message": errJson.Message, "data": nil})
                     default:
-                        errJson := &xerrors.ErrUnknown
-                        // errJson.Message = err.String()
                         log.Fatal(err)
+                        errJson := &xerrors.ErrUnknown
                         c.JSON(http.StatusInternalServerError, gin.H{"code": errJson.Code, "message": errJson.Message, "data": err})
                 }
             }
