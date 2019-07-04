@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"io"
-	"os"
-	"log"
 	"fmt"
-    "net/http"
-	"github.com/gin-gonic/gin"
 	"github.com/bwmarrin/snowflake"
+	"github.com/gin-gonic/gin"
+	"io"
+	"log"
+	"net/http"
+	"os"
 	"quarxlab/app/database"
 	"quarxlab/app/models"
 )
@@ -17,6 +17,7 @@ func init() {
 }
 
 type assetsController int
+
 const AssetsController = assetsController(0)
 
 func (this assetsController) List(c *gin.Context) {

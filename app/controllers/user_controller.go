@@ -2,23 +2,24 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"log"
-	"strconv"
-	"regexp"
-	xjwt "quarxlab/lib/jwt"
-	xerrors "quarxlab/lib/errors"
-	xctx "quarxlab/lib/context"
 	"golang.org/x/crypto/bcrypt"
+	"log"
+	"net/http"
 	"quarxlab/app/database"
 	"quarxlab/app/models"
+	xctx "quarxlab/lib/context"
+	xerrors "quarxlab/lib/errors"
+	xjwt "quarxlab/lib/jwt"
+	"regexp"
+	"strconv"
 )
 
 func init() {
 	database.Database().AutoMigrate(&models.User{}, &models.Profile{})
 }
 
-type userController int 
+type userController int
+
 const UserController = userController(0)
 
 func (this userController) check(username, password string) {
@@ -88,7 +89,7 @@ func (this userController) Signin(c *gin.Context) {
 	var user models.User
 	database.Database().Where("username = ?", username).First(&user)
 
-	if (user.ID == 0) {
+	if user.ID == 0 {
 		errJson := xerrors.NewError(4001)
 		panic(errJson)
 	}
@@ -141,7 +142,7 @@ func (this userController) Forgot(c *gin.Context) {
 }
 
 func (this userController) Profile(c *gin.Context) {
-	
+
 	var userID uint
 	if uid := c.Param("user_id"); uid != "" {
 		tmpUID, _ := strconv.ParseUint(uid, 0, 0)
@@ -158,14 +159,14 @@ func (this userController) Profile(c *gin.Context) {
 		panic(errJson)
 	}
 
-	c.JSON(http.StatusOK, gin.H{"code": 0, "message": nil, "data": profile })
+	c.JSON(http.StatusOK, gin.H{"code": 0, "message": nil, "data": profile})
 }
 
 func (this userController) Edit(c *gin.Context) {
 
 	userID, _ := c.Get(xctx.UID)
 
-	var oldProfile models.Profile 
+	var oldProfile models.Profile
 	var newProfile = models.Profile{UserID: userID.(uint)}
 	if err := c.ShouldBind(&newProfile); err == nil {
 		updated := database.Database().Model(&oldProfile).Where("user_id = ?", userID).Updates(&newProfile).RowsAffected > 0
@@ -175,7 +176,7 @@ func (this userController) Edit(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
-		return 
+		return
 	} else {
 		log.Fatal(err)
 		panic(err)

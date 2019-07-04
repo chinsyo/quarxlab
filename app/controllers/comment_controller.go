@@ -1,14 +1,14 @@
-package controllers 
+package controllers
 
 import (
-    "net/http"
 	"github.com/gin-gonic/gin"
-	
+	"net/http"
+
 	"log"
 	"quarxlab/app/database"
 	"quarxlab/app/models"
-	"strconv"
 	xerrors "quarxlab/lib/errors"
+	"strconv"
 )
 
 func init() {
@@ -16,10 +16,11 @@ func init() {
 }
 
 type commentController int
+
 const CommentController = commentController(0)
 
 func (this commentController) List(c *gin.Context) {
-	
+
 	articleID := c.Param("article_id")
 	var article models.Article
 	database.Database().First(&article, articleID)
@@ -78,7 +79,7 @@ func (this commentController) Update(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
-		return 
+		return
 	} else {
 		log.Fatal(err)
 		panic(err)

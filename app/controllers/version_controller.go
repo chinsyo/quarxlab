@@ -6,7 +6,8 @@ import (
 	"quarxlab/app/models"
 )
 
-type versionController int 
+type versionController int
+
 const VersionController = versionController(0)
 
 func (this versionController) Latest(c *gin.Context) {

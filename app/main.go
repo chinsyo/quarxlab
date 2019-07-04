@@ -2,9 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	xmiddlewares "quarxlab/lib/middlewares"
 	. "quarxlab/app/controllers"
-
+	xmiddlewares "quarxlab/lib/middlewares"
 )
 
 func main() {
@@ -13,8 +12,8 @@ func main() {
 	router.Use(gin.Logger())
 	router.Use(xmiddlewares.Recovery())
 	router.Use(xmiddlewares.JWT())
-	
-	v1 := router.Group("/api/v1") 
+
+	v1 := router.Group("/api/v1")
 	{
 		// version
 		v1.GET("/version", VersionController.Latest)

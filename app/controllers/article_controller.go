@@ -1,11 +1,11 @@
 package controllers
 
 import (
-    "net/http"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
 	"quarxlab/app/database"
 	"quarxlab/app/models"
-	"log"
 	xerrors "quarxlab/lib/errors"
 )
 
@@ -14,10 +14,11 @@ func init() {
 }
 
 type articleController int
+
 const ArticleController = articleController(0)
 
 func (this articleController) List(c *gin.Context) {
-	
+
 	var articles []models.Article
 	database.Database().Find(&articles)
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": articles})
@@ -66,7 +67,7 @@ func (this articleController) Update(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
-		return 
+		return
 	} else {
 		log.Fatal(err)
 		panic(err)
@@ -74,7 +75,7 @@ func (this articleController) Update(c *gin.Context) {
 }
 
 func (this articleController) Delete(c *gin.Context) {
-	
+
 	articleID := c.Param("article_id")
 	deleted := database.Database().Where("id = ?", articleID).Delete(&models.Article{}).RowsAffected > 0
 	if !deleted {

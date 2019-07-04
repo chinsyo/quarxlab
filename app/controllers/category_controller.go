@@ -1,12 +1,12 @@
-package controllers 
+package controllers
 
 import (
-    "net/http"
 	"github.com/gin-gonic/gin"
-	
+	"net/http"
+
+	"log"
 	"quarxlab/app/database"
 	"quarxlab/app/models"
-	"log"
 	xerrors "quarxlab/lib/errors"
 )
 
@@ -15,10 +15,11 @@ func init() {
 }
 
 type categoryController int
+
 const CategoryController = categoryController(0)
 
 func (this categoryController) List(c *gin.Context) {
-	
+
 	var categories []models.Category
 	database.Database().Find(&categories)
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": categories})
@@ -45,10 +46,10 @@ func (this categoryController) Query(c *gin.Context) {
 	categoryID := c.Param("category_id")
 
 	var category models.Category
-    database.Database().First(&category, categoryID)
-    
-    var articles []models.Article
-    database.Database().Model(&category).Related(&articles)
+	database.Database().First(&category, categoryID)
+
+	var articles []models.Article
+	database.Database().Model(&category).Related(&articles)
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": articles})
 }
@@ -66,7 +67,7 @@ func (this categoryController) Update(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
-		return 
+		return
 	} else {
 		log.Fatal(err)
 		panic(err)
