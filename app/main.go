@@ -11,6 +11,8 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(xmiddlewares.Recovery())
+	// make sure that dummy is before jwt
+	router.Use(xmiddlewares.Dummy())
 	router.Use(xmiddlewares.JWT())
 
 	v1 := router.Group("/api/v1")
