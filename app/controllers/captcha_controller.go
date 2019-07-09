@@ -32,8 +32,8 @@ func (this captchaController) Refresh(c *gin.Context) {
 		err := xerrors.NewError(4105)
 		panic(err)
 	}
-	captchaID1 := ctxCID.(string)
-	log.Println("captchaID1", captchaID1)
+	captchaIDString := ctxCID.(string)
+	log.Println("captchaIDString", captchaIDString)
 
 	err := this.serve(c.Writer, c.Request, captchaID)
 	if err != nil {

@@ -16,9 +16,10 @@ var whitelist = []string{
 	"/api/v1/logout",
 	"/api/v1/forgot",
 	"/api/v1/verify",
+	"/api/v1/captcha",
 }
 
-func bypass(path string) bool {
+func shouldBypass(path string) bool {
 	for _, v := range whitelist {
 		if v == path {
 			return true
@@ -31,14 +32,7 @@ func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		path := c.Request.URL.Path
-
-		// statusCode := c.Writer.Status()
-		// if statusCode != http.StatusOK {
-		//     c.Next()
-		//     return
-		// }
-
-		if bypass(path) {
+		if shouldBypass(path) {
 			c.Next()
 			return
 		}
