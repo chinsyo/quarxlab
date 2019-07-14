@@ -22,7 +22,7 @@ type userController int
 
 const UserController = userController(0)
 
-func (this userController) check(username, password string) {
+func (this userController) authenticate(username, password string) {
 	if username == "" || password == "" {
 		errJson := xerrors.NewError(4101)
 		panic(errJson)
@@ -43,7 +43,7 @@ func (this userController) Signup(c *gin.Context) {
 
 	username := c.PostForm("username")
 	password := c.PostForm("password")
-	this.check(username, password)
+	this.authenticate(username, password)
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -84,7 +84,7 @@ func (this userController) Signin(c *gin.Context) {
 
 	username := c.PostForm("username")
 	password := c.PostForm("password")
-	this.check(username, password)
+	this.authenticate(username, password)
 
 	var user models.User
 	database.Database().Where("username = ?", username).First(&user)
@@ -118,7 +118,7 @@ func (this userController) Forgot(c *gin.Context) {
 
 	username := c.PostForm("username")
 	password := c.PostForm("password")
-	this.check(username, password)
+	this.authenticate(username, password)
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {

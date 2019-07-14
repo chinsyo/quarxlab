@@ -11,14 +11,17 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(xmiddlewares.Recovery())
-	// make sure that dummy is before jwt
-	router.Use(xmiddlewares.Dummy())
-	router.Use(xmiddlewares.JWT())
+	router.Use(xmiddlewares.RateLimit())
+
+	router.Static("/static", "./static")
 
 	v1 := router.Group("/api/v1")
 	{
 		// version
 		v1.GET("/version", VersionController.Latest)
+
+		// stat
+		v1.GET("/count", StatController.Count)
 
 		// captcha
 		v1.GET("/captcha", CaptchaController.Refresh)
@@ -26,7 +29,8 @@ func main() {
 
 		// assets
 		v1.GET("/assets", AssetsController.List)
-		v1.POST("/assets", AssetsController.Upload)
+		v1.POST("/upload", AssetsController.Upload)
+		v1.POST("/submit", AssetsController.Submit)
 		v1.DELETE("/assets/:assets_id", AssetsController.Delete)
 
 		// users
@@ -60,5 +64,9 @@ func main() {
 		v1.PUT("/category/:category_id", CategoryController.Update)
 		v1.DELETE("/category/:category_id", CategoryController.Delete)
 	}
+	// make sure that status filter is before jwt
+	v1.Use(xmiddlewares.StatusFilter())
+	v1.Use(xmiddlewares.JWT())
+
 	router.Run(":8000")
 }

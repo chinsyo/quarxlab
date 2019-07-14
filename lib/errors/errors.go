@@ -38,6 +38,7 @@ var errorMessage = map[int]string{
     4104: "密码格式错误",
     4105: "没有验证码需要校验",
     9001: "文件无效",
+    9900: "Redis连接失败",
 }
 
 func NewError(code int) Error {

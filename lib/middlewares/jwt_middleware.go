@@ -7,6 +7,7 @@ import (
 	xerrors "quarxlab/lib/errors"
 	xjwt "quarxlab/lib/jwt"
 	"time"
+	"log"
 )
 
 var whitelist = []string{
@@ -17,6 +18,7 @@ var whitelist = []string{
 	"/api/v1/forgot",
 	"/api/v1/verify",
 	"/api/v1/captcha",
+	"/api/v1/assets",
 }
 
 func shouldBypass(path string) bool {
@@ -37,7 +39,8 @@ func JWT() gin.HandlerFunc {
 			return
 		}
 
-		token := c.Query("token")
+		// token := c.Query("token")
+		token := c.GetHeader("X-Auth-Token")
 		errJson := xerrors.ErrSuccess
 
 		if token == "" {
@@ -56,6 +59,7 @@ func JWT() gin.HandlerFunc {
 			c.Abort()
 			return
 		} else {
+			log.Println("c.Set", claims.UserID)
 			c.Set(xctx.UID, claims.UserID)
 		}
 		c.Next()
