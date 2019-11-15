@@ -41,7 +41,7 @@ func (this commentController) Create(c *gin.Context) {
 		comment.ArticleID = uint(d)
 		created := database.Database().Create(&comment).RowsAffected > 0
 		if !created {
-			errJson := xerrors.NewError(2002)
+			errJson := xerrors.ErrCommentPubFailed
 			panic(errJson)
 		}
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
@@ -58,7 +58,7 @@ func (this commentController) Query(c *gin.Context) {
 	var comment models.Comment
 	database.Database().First(&comment, commentID)
 	if comment.ID == 0 {
-		errJson := xerrors.NewError(2001)
+		errJson := xerrors.ErrArticlePubFailed
 		panic(errJson)
 	}
 
@@ -74,7 +74,7 @@ func (this commentController) Update(c *gin.Context) {
 	if err := c.ShouldBind(&comment); err == nil {
 		updated := database.Database().Model(&comment).Where("id = ?", commentID).Updates(comment).RowsAffected > 0
 		if !updated {
-			errJson := xerrors.NewError(2001)
+			errJson := xerrors.ErrArticlePubFailed
 			panic(errJson)
 		}
 
@@ -91,7 +91,7 @@ func (this commentController) Delete(c *gin.Context) {
 	commentID := c.Param("comment_id")
 	deleted := database.Database().Where("id = ?", commentID).Delete(&models.Comment{}).RowsAffected > 0
 	if !deleted {
-		errJson := xerrors.NewError(2001)
+		errJson := xerrors.ErrArticlePubFailed
 		panic(errJson)
 	}
 

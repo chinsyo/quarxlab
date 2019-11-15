@@ -31,7 +31,7 @@ func (this categoryController) Create(c *gin.Context) {
 	if err := c.ShouldBind(&category); err == nil {
 		created := database.Database().Create(&category).RowsAffected > 0
 		if !created {
-			errJson := xerrors.NewError(3002)
+			errJson := xerrors.ErrCategoryPubFailed
 			panic(errJson)
 		}
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
@@ -62,7 +62,7 @@ func (this categoryController) Update(c *gin.Context) {
 	if err := c.ShouldBind(&category); err == nil {
 		updated := database.Database().Model(&category).Where("id = ?", categoryID).Updates(category).RowsAffected > 0
 		if !updated {
-			errJson := xerrors.NewError(3001)
+			errJson := xerrors.ErrCategoryNotExist
 			panic(errJson)
 		}
 
@@ -80,7 +80,7 @@ func (this categoryController) Delete(c *gin.Context) {
 
 	deleted := database.Database().Where("id = ?", categoryID).Delete(&models.Category{}).RowsAffected > 0
 	if !deleted {
-		errJson := xerrors.NewError(3001)
+		errJson := xerrors.ErrCategoryNotExist
 		panic(errJson)
 	}
 

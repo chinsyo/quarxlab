@@ -60,7 +60,7 @@ func (this userController) Signup(c *gin.Context) {
 		if !created {
 			tx.Rollback()
 			log.Fatal("User create failed")
-			errJson := xerrors.NewError(4002)
+			errJson := xerrors.ErrUserCreateFailed
 			panic(errJson)
 		}
 
@@ -69,7 +69,7 @@ func (this userController) Signup(c *gin.Context) {
 		if !created {
 			tx.Rollback()
 			log.Fatal("Profile create failed")
-			errJson := xerrors.NewError(4002)
+			errJson := xerrors.ErrUserCreateFailed
 			panic(errJson)
 		}
 		tx.Commit()
@@ -90,7 +90,7 @@ func (this userController) Signin(c *gin.Context) {
 	database.Database().Where("username = ?", username).First(&user)
 
 	if user.ID == 0 {
-		errJson := xerrors.NewError(4001)
+		errJson := xerrors.ErrUserNotExist
 		panic(errJson)
 	}
 
@@ -131,7 +131,7 @@ func (this userController) Forgot(c *gin.Context) {
 		user.Password = string(hash)
 		created := database.Database().Create(&user).RowsAffected > 0
 		if !created {
-			errJson := xerrors.NewError(4002)
+			errJson := xerrors.ErrUserCreateFailed
 			panic(errJson)
 		}
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
@@ -155,7 +155,7 @@ func (this userController) Profile(c *gin.Context) {
 	var profile = models.Profile{UserID: userID}
 	database.Database().First(&profile)
 	if profile.ID == 0 {
-		errJson := xerrors.NewError(4001)
+		errJson := xerrors.ErrUserNotExist
 		panic(errJson)
 	}
 
@@ -171,7 +171,7 @@ func (this userController) Edit(c *gin.Context) {
 	if err := c.ShouldBind(&newProfile); err == nil {
 		updated := database.Database().Model(&oldProfile).Where("user_id = ?", userID).Updates(&newProfile).RowsAffected > 0
 		if !updated {
-			errJson := xerrors.NewError(4001)
+			errJson := xerrors.ErrUserNotExist
 			panic(errJson)
 		}
 

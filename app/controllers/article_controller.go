@@ -30,7 +30,7 @@ func (this articleController) Create(c *gin.Context) {
 	if err := c.ShouldBind(&article); err == nil {
 		created := database.Database().Create(&article).RowsAffected > 0
 		if !created {
-			errJson := xerrors.NewError(1002)
+			errJson := xerrors.ErrArticlePubFailed
 			panic(errJson)
 		}
 		c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{}})
@@ -47,7 +47,7 @@ func (this articleController) Query(c *gin.Context) {
 	var article models.Article
 	database.Database().First(&article, articleID)
 	if article.ID == 0 {
-		errJson := xerrors.NewError(1001)
+		errJson := xerrors.ErrArticleNotExist
 		panic(errJson)
 	}
 
@@ -62,7 +62,7 @@ func (this articleController) Update(c *gin.Context) {
 	if err := c.ShouldBind(&article); err == nil {
 		updated := database.Database().Model(&article).Where("id = ?", articleID).Updates(article).RowsAffected > 0
 		if !updated {
-			errJson := xerrors.NewError(1001)
+			errJson := xerrors.ErrArticleNotExist
 			panic(errJson)
 		}
 
@@ -79,7 +79,7 @@ func (this articleController) Delete(c *gin.Context) {
 	articleID := c.Param("article_id")
 	deleted := database.Database().Where("id = ?", articleID).Delete(&models.Article{}).RowsAffected > 0
 	if !deleted {
-		errJson := xerrors.NewError(1001)
+		errJson := xerrors.ErrArticleNotExist
 		panic(errJson)
 	}
 

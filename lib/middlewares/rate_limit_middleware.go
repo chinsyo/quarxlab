@@ -2,8 +2,8 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
 	"github.com/go-redis/redis"
+	"log"
 )
 
 var client *redis.Client

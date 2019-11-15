@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"github.com/go-redis/redis"
+	"net/http"
 	xerrors "quarxlab/lib/errors"
 )
 

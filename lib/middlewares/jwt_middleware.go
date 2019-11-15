@@ -2,12 +2,12 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	xctx "quarxlab/lib/context"
 	xerrors "quarxlab/lib/errors"
 	xjwt "quarxlab/lib/jwt"
 	"time"
-	"log"
 )
 
 var whitelist = []string{

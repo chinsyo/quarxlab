@@ -37,7 +37,7 @@ func (this assetsController) Submit(c *gin.Context) {
 
 		updated := database.Database().Save(&asset).RowsAffected > 0
 		if !updated {
-			errJson := xerrors.NewError(1001)
+			errJson := xerrors.ErrArticleNotExist
 			panic(errJson)
 		}
 
@@ -82,13 +82,13 @@ func (this assetsController) Upload(c *gin.Context) {
 	asset := models.Asset{FilePath: "static/upload/" + filename}
 	created := database.Database().Create(&asset).RowsAffected > 0
 	if !created {
-		errJson := xerrors.NewError(1002)
+		errJson := xerrors.ErrArticlePubFailed
 		panic(errJson)
 	}
 
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": gin.H{"id": asset.ID}})
 }
 
-func (this assetsController) Delete(c *gin.Context) { 
+func (this assetsController) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"code": 0, "message": "", "data": ""})
 }

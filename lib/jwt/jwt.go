@@ -1,15 +1,15 @@
 package jwt
 
 import (
+	xjwt "github.com/dgrijalva/jwt-go"
 	"time"
-	xjwt "github.com/dgrijalva/jwt-go"	
 )
 
 var jwtSecret = []byte("quarxlab_secret")
 
 type Claims struct {
 	xjwt.StandardClaims
-	UserID uint 
+	UserID uint
 }
 
 func GenerateToken(userID uint) (string, error) {
@@ -18,8 +18,8 @@ func GenerateToken(userID uint) (string, error) {
 
 	claims := Claims{
 		xjwt.StandardClaims{
-			ExpiresAt : expireTime.Unix(),
-			Issuer : "quarxlab",
+			ExpiresAt: expireTime.Unix(),
+			Issuer:    "quarxlab",
 		},
 		userID,
 	}

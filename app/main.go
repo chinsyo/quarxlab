@@ -19,6 +19,7 @@ func main() {
 	{
 		// version
 		v1.GET("/version", VersionController.Latest)
+        v1.GET("/compare/:another", VersionController.Compare)
 
 		// stat
 		v1.GET("/count", StatController.Count)
